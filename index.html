@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Logística - Cáritas Diocesana Guasdualito y PMA</title>
+    <style>
+        :root {
+            --color-bg: #FFFFFF;
+            --color-primary: #C91C1C; /* Rojo institucional */
+            --color-primary-dark: #A31414;
+            --color-text: #1A1A1A;
+            --color-text-light: #FFFFFF;
+            --color-gray-bg: #F8F9FA;
+            --color-border: #E5E7EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-gray-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--color-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* Encabezado */
+        header {
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Información del Encargado */
+        .logistics-info {
+            background-color: #FFF5F5;
+            border-left: 5px solid var(--color-primary);
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 4px;
+        }
+
+        .logistics-info h3 {
+            color: var(--color-primary);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .logistics-info p {
+            font-size: 0.95rem;
+            color: var(--color-text);
+        }
+
+        /* Secciones Principales (Meses) */
+        .month-section {
+            margin: 20px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .month-header {
+            background-color: var(--color-text);
+            color: var(--color-text-light);
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .month-header:hover {
+            background-color: #333333;
+        }
+
+        .month-header::after {
+            content: '+';
+            font-size: 1.4rem;
+        }
+
+        .month-section.active .month-header::after {
+            content: '-';
+        }
+
+        .month-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--color-bg);
+        }
+
+        .month-section.active .month-content {
+            display: block;
+        }
+
+        /* Bloques dentro de los meses */
+        .block-title {
+            font-size: 1.1rem;
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 5px;
+            margin: 20px 0 15px 0;
+            text-transform: uppercase;
+        }
+
+        .basket-spec {
+            background-color: var(--color-gray-bg);
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            border: 1px dashed var(--color-primary);
+        }
+
+        /* Jornadas y Fechas */
+        .date-group {
+            margin-bottom: 20px;
+        }
+
+        .date-title {
+            font-weight: bold;
+            color: var(--color-text);
+            background-color: var(--color-border);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        /* Tarjetas de Comunidades */
+        .community-card {
+            background: #FFFFFF;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .community-card h5 {
+            color: var(--color-primary);
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .community-stats span {
+            color: #4B5563;
+        }
+
+        .community-stats strong {
+            color: var(--color-text);
+        }
+
+        /* Botón de Waybill */
+        .btn-waybill {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-text-light);
+            padding: 8px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .btn-waybill:hover {
+            background-color: var(--color-primary-dark);
+        }
+
+        /* Notas adicionales y consolidados */
+        .note-box {
+            background-color: #FFFBEB;
+            border: 1px solid #FCD34D;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        .consolidated-box {
+            background-color: #F3F4F6;
+            border-left: 4px solid var(--color-text);
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .consolidated-box h4 {
+            margin-bottom: 5px;
+            color: var(--color-text);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #6B7280;
+            border-top: 1px solid var(--color-border);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Encabezado Principal -->
+        <header>
+            <h1>Inventario de Logística</h1>
+            <p>Cáritas Diocesana Guasdualito &bull; PMA</p>
+        </header>
+
+        <!-- Información de Logística y Responsable -->
+        <div class="logistics-info">
+            <h3>Detalles de Logística</h3>
+            <p><strong>Encargado de Logística:</strong> Ronald de Jesús Niño Panza</p>
+            <p><strong>Instituciones Aliadas:</strong> Cáritas Diocesana Guasdualito &bull; PMA (Programa Mundial de Alimentos)</p>
+        </div>
+
+        <!-- ================= MES DE AGOSTO ================= -->
+        <div class="month-section">
+            <div class="month-header" onclick="toggleMonth(this)">
+                Jornada de Agosto de 2026
+            </div>
+            <div class="month-content">
+                <div class="basket-spec">
+                    <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (1 aceite, 1 sal).
+                </div>
+
+                <!-- Fecha 26/08/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 26/08/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: 5 de Julio</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>420 canastas (840 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>356 canastas (712 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>64 canastas (128 kits)</strong> (Resguardadas en depósito de la iglesia)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1L9aR9djevAt_Fhd4wuOBSdwgMzlb8Qi8/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: El Centro</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>140 base + 5 extra = 145 canastas (290 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>145 canastas (290 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>59 canastas (118 kits)</strong> (En depósito de la iglesia)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1pfTo68AnVio3V_TH40u9aKAarIQs_2og/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: La Flor de Apure</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>140 base + 4 extra = 144 canastas (288 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>144 canastas (288 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>55 canastas (110 kits)</strong> (Remanentes finales en depósito)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1tML1lzlFZItFEJXtQy0sCfWhThY6upVA/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+                </div>
+
+                <!-- Fecha 27/08/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 27/08/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: Sinaí</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>320 canastas (640 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>286 canastas (572 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>34 canastas (68 kits)</strong> (Depositadas de forma independiente)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1i3W5yoaPkLs24CaVDlZZD9oD8zdQvyY0/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: San Francisco</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>300 canastas (600 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>288 canastas (576 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>12 canastas (24 kits)</strong> (Trasladadas al depósito de la iglesia)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1pTj-Z4f12ZmcXSMUyszH8PZhFXVhdPsc/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="consolidated-box">
+                        <h4>Consolidado al Cierre de Fecha</h4>
+                        <p><strong>80 canastas acumuladas</strong> listas para el día siguiente (remanentes de Sinaí, San Francisco y lote previo).</p>
+                    </div>
+                </div>
+
+                <!-- Fecha 28/08/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 28/08/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: Los Caracaros</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>81 canastas (162 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>76 canastas (152 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>4 canastas (8 kits)</strong> (Tras préstamo interno de 1 unidad)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/12GAqvAN8VJWfRm809N3Nka-dZwTdMDjg/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: La Primavera</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>114 base + 1 en préstamo = 115 canastas (230 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>115 canastas (230 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1dXDJe9-k5vuSm9Aq5IpW2QCmWA7S_P4N/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="consolidated-box">
+                        <h4>Balance Final del Depósito</h4>
+                        <p><strong>25 canastas (50 kits)</strong> consolidadas al cierre de agosto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MES DE SEPTIEMBRE ================= -->
+        <div class="month-section">
+            <div class="month-header" onclick="toggleMonth(this)">
+                Jornada de Septiembre de 2026
+            </div>
+            <div class="month-content">
+                
+                <!-- BLOQUE 1 -->
+                <div class="block-title">Bloque 1 de Septiembre</div>
+                <div class="basket-spec">
+                    <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (4 aceites, 1 sal).
+                </div>
+
+                <!-- Fecha 09/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 09/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: La Esperancita</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>5 base + 25 de depósito = 30 canastas (60 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>29 canastas (58 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1KBRV7h-w8ZHIy9Y1gLy14axyq-ls_arZ/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: Barrio Nuevo</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>169 canastas (338 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>157 canastas (314 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>12 canastas (24 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/19Xw4N5fd_nOrHjWNd7qbj__ly6bqgvb2/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+                </div>
+
+                <!-- Fecha 10/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 10/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: El Progreso</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>48 canastas (96 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>47 canastas (94 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1LeQf76bPxED64wpxqAYdD5x2D5CpWskq/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: Santa Rita</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>71 canastas (142 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>68 canastas (136 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>3 canastas (6 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1hUWIYmiDSGGGPgXJAHrSfIGBP1qUyttW/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+                </div>
+
+                <!-- Fecha 11/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 11/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: Santa María</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>49 canastas (98 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>46 canastas (92 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>3 canastas (6 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1yZTxa5PW1EomOciDHtckDqNDqpCUov4y/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: Santa Rosa</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>126 canastas (252 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>125 canastas (250 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/13TmD30aYqv4WDsi4giXrNYrCJ-7DZkIf/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+                </div>
+
+                <!-- Fecha 12/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 12/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: Ripial</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>148 canastas (296 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>144 canastas (288 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>4 canastas (8 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1_3IrOWzjoU268HRIVdqgiuAG9vC-GAZi/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: La Capilla</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>162 canastas (324 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>160 canastas (320 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>2 canastas (4 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1uZWguOkiZsNYxz9_ug613MdQRjfT8FfL/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: Arenales</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>8 base + excedentes de días previos</strong></div>
+                            <div><span>Entregadas:</span> <strong>35 canastas (70 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong> (Cerrado exacto)</div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1BS9QGLm2CAumf60HBsRl1Xby2Gkt9p1o/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="note-box">
+                        <strong>Nota Adicional de Logística:</strong> En uno de los camiones llegaron 75 aceites para compensar los tres aceites que hacían falta para la comunidad, con el fin de compensar los tres aceites de las 25 canastas sobrantes del mes pasado y entregárselo a la comunidad La Esperancita.
+                        <div style="margin-top: 10px;">
+                            <a href="https://drive.google.com/file/d/1mqo3btofv17QakXNwrZew4WkLMAE9TDe/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Soporte (Excedente de 75 aceites)</a>
+                        </div>
+                    </div>
+
+                    <div class="consolidated-box">
+                        <h4>Consolidado General del Bloque 1 (Septiembre)</h4>
+                        <p><strong>Total Asignadas:</strong> 811 canastas (1.622 kits) [786 enviadas por camiones + 25 del depósito previo].<br>
+                        <strong>Total Entregadas:</strong> 811 canastas (1.622 kits).<br>
+                        <strong>Total Remanentes:</strong> 0 canastas (0 kits).</p>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 2 -->
+                <div class="block-title" style="margin-top: 30px;">Bloque 2 de Septiembre (Reporte Oficial EPR)</div>
+                <div class="basket-spec">
+                    <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (2 aceites, 2 sales).
+                </div>
+
+                <!-- Fecha 23/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 23/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: 5 de Julio</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>355 canastas (710 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>354 canastas (708 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1SZKowr7Dw68HOgmo8DZWE_mHcY71cW0k/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: Casco Central</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>143 canastas (286 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>139 canastas (278 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>4 canastas (8 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/19O-AQs2NokfqDmFvCKmCziRigfF5LzYu/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: Flor de Apure</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>142 canastas (284 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>137 canastas (274 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>5 canastas (10 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1cKZxXiCJVRXLPtkJW34iH2jD_PffR0tj/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+                </div>
+
+                <!-- Fecha 24/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 24/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: Sinaí</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>286 canastas (572 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>277 canastas (554 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>9 canastas (18 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1UgsOrnju14WPAVLgS_8qndOzo07VW8nz/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: San Francisco</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>286 canastas (572 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>278 canastas (556 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>8 canastas (16 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1DniE2VqS_jv3X6DKj_sGsCeMcanwcV1h/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+                </div>
+
+                <!-- Fecha 25/09/2026 -->
+                <div class="date-group">
+                    <div class="date-title">Fecha: 25/09/2026</div>
+                    
+                    <div class="community-card">
+                        <h5>Comunidad: Los Caracaros</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>76 canastas (152 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>76 canastas (152 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1njD-uIx2WO2dzsaXmwfxymd4LFMEGQQX/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="community-card">
+                        <h5>Comunidad: La Primavera</h5>
+                        <div class="community-stats">
+                            <div><span>Asignadas:</span> <strong>115 canastas (230 kits)</strong></div>
+                            <div><span>Entregadas:</span> <strong>115 canastas (230 kits)</strong></div>
+                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong></div>
+                        </div>
+                        <a href="https://drive.google.com/file/d/1kTFUDFODy-zTwNlx5ZDVslKqHWeYnPMW/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                    </div>
+
+                    <div class="consolidated-box">
+                        <h4>Consolidado General del Bloque 2</h4>
+                        <p><strong>Total Asignadas:</strong> 1.403 canastas (2.806 kits).<br>
+                        <strong>Total Entregadas:</strong> 1.376 canastas (2.752 kits).<br>
+                        <strong>Total Remanentes:</strong> 27 canastas (54 kits).<br>
+                        <strong>Resumen de Excedentes Adicionales Totales:</strong> 54 aceites y 54 sales.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            <p>Cáritas Diocesana Guasdualito &bull; PMA &copy; 2026. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Función interactiva para expandir o contraer las secciones de los meses
+        function toggleMonth(headerElement) {
+            const section = headerElement.parentElement;
+            section.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
