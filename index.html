@@ -7,236 +7,351 @@
     <style>
         :root {
             --color-bg: #FFFFFF;
-            --color-primary: #C91C1C; /* Rojo institucional */
-            --color-primary-dark: #A31414;
-            --color-text: #1A1A1A;
+            --color-primary: #D32F2F; /* Rojo institucional más vibrante */
+            --color-primary-dark: #B71C1C;
+            --color-primary-light: #FFEBEE;
+            --color-text: #1F2937;
             --color-text-light: #FFFFFF;
-            --color-gray-bg: #F8F9FA;
+            --color-gray-bg: #F9FAFB;
             --color-border: #E5E7EB;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--color-gray-bg);
+            background-color: #F3F4F6;
             color: var(--color-text);
             line-height: 1.6;
-            padding: 20px;
+            padding: 24px;
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
             background-color: var(--color-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
             overflow: hidden;
         }
 
         /* Encabezado */
         header {
-            background-color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
             color: var(--color-text-light);
-            padding: 30px 20px;
+            padding: 36px 20px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+            font-size: 2rem;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 800;
         }
 
         header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.95;
+            font-weight: 300;
         }
 
         /* Información del Encargado */
         .logistics-info {
-            background-color: #FFF5F5;
-            border-left: 5px solid var(--color-primary);
-            padding: 15px 20px;
-            margin: 20px;
-            border-radius: 4px;
+            background-color: var(--color-primary-light);
+            border-left: 6px solid var(--color-primary);
+            padding: 18px 24px;
+            margin: 24px;
+            border-radius: 6px;
+            box-shadow: var(--shadow-sm);
         }
 
         .logistics-info h3 {
-            color: var(--color-primary);
-            margin-bottom: 5px;
-            font-size: 1.1rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 6px;
+            font-size: 1.15rem;
+            font-weight: 700;
         }
 
         .logistics-info p {
             font-size: 0.95rem;
-            color: var(--color-text);
+            color: #374151;
         }
 
-        /* Secciones Principales (Meses) */
-        .month-section {
-            margin: 20px;
-            border: 1px solid var(--color-border);
-            border-radius: 6px;
-            overflow: hidden;
+        /* Buscador Global Mejorado */
+        .search-container {
+            padding: 0 24px;
+            margin-bottom: 24px;
+            position: relative;
         }
 
-        .month-header {
-            background-color: var(--color-text);
-            color: var(--color-text-light);
-            padding: 15px 20px;
-            cursor: pointer;
+        .search-wrapper {
+            position: relative;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: background 0.3s;
         }
 
-        .month-header:hover {
-            background-color: #333333;
-        }
-
-        .month-header::after {
-            content: '+';
-            font-size: 1.4rem;
-        }
-
-        .month-section.active .month-header::after {
-            content: '-';
-        }
-
-        .month-content {
-            display: none;
-            padding: 20px;
+        .search-input {
+            width: 100%;
+            padding: 14px 18px 14px 45px;
+            font-size: 1.05rem;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            outline: none;
             background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
         }
 
-        .month-section.active .month-content {
+        .search-wrapper::before {
+            content: "🔍";
+            position: absolute;
+            left: 15px;
+            font-size: 1.1rem;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .search-input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.15), var(--shadow-sm);
+            background-color: #FFFFFF;
+        }
+
+        /* Navegación por Pestañas (Tabs) con Animación */
+        .tabs-nav {
+            display: flex;
+            background-color: #111827;
+            padding: 6px 6px 0 6px;
+            gap: 4px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #9CA3AF;
+            padding: 14px 20px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            border-radius: 6px 6px 0 0;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            color: var(--color-text-light);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Contenido de las Pestañas */
+        .tab-content {
+            display: none;
+            padding: 24px;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .tab-content.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Bloques dentro de los meses */
         .block-title {
-            font-size: 1.1rem;
-            color: var(--color-primary);
+            font-size: 1.15rem;
+            color: var(--color-primary-dark);
             border-bottom: 2px solid var(--color-primary);
-            padding-bottom: 5px;
-            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            margin: 24px 0 16px 0;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
         }
 
         .basket-spec {
             background-color: var(--color-gray-bg);
-            padding: 10px 15px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            border: 1px dashed var(--color-primary);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+            border: 1px dashed #CBD5E1;
+            color: #4B5563;
         }
 
         /* Jornadas y Fechas */
         .date-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .date-title {
-            font-weight: bold;
-            color: var(--color-text);
-            background-color: var(--color-border);
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 1rem;
+            font-weight: 700;
+            color: #374151;
+            background-color: #E5E7EB;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 0.98rem;
+            letter-spacing: 0.3px;
         }
 
-        /* Tarjetas de Comunidades */
+        /* Tarjetas de Comunidades Compactas y Métricas */
         .community-card {
-            background: #FFFFFF;
+            background: var(--color-bg);
             border: 1px solid var(--color-border);
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .community-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: #CBD5E1;
         }
 
         .community-card h5 {
             color: var(--color-primary);
-            font-size: 1.05rem;
-            margin-bottom: 8px;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .community-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
             font-size: 0.9rem;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            background-color: var(--color-gray-bg);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #F3F4F6;
+        }
+
+        .community-stats div {
+            display: flex;
+            flex-direction: column;
         }
 
         .community-stats span {
-            color: #4B5563;
+            color: #6B7280;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
         }
 
         .community-stats strong {
             color: var(--color-text);
+            font-size: 0.98rem;
+            font-weight: 600;
         }
 
         /* Botón de Waybill */
         .btn-waybill {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             background-color: var(--color-primary);
             color: var(--color-text-light);
-            padding: 8px 14px;
-            border-radius: 4px;
+            padding: 9px 16px;
+            border-radius: 6px;
             text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: bold;
-            transition: background-color 0.2s;
-            text-align: center;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-waybill:hover {
             background-color: var(--color-primary-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
         }
 
         /* Notas adicionales y consolidados */
         .note-box {
-            background-color: #FFFBEB;
-            border: 1px solid #FCD34D;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            margin-top: 15px;
+            background-color: #FEFCE8;
+            border: 1px solid #FEF08A;
+            padding: 14px 16px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            margin-top: 16px;
+            color: #854D0E;
         }
 
         .consolidated-box {
-            background-color: #F3F4F6;
-            border-left: 4px solid var(--color-text);
-            padding: 12px 15px;
-            border-radius: 4px;
-            margin-top: 15px;
-            font-size: 0.9rem;
+            background-color: #F8FAFC;
+            border-left: 4px solid #475569;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin-top: 16px;
+            font-size: 0.92rem;
+            border: 1px solid #E2E8F0;
+            border-left-width: 4px;
         }
 
         .consolidated-box h4 {
-            margin-bottom: 5px;
-            color: var(--color-text);
+            margin-bottom: 6px;
+            color: #1E293B;
+            font-weight: 700;
+        }
+
+        /* Estado Vacío */
+        .empty-slot {
+            color: #9CA3AF;
+            font-style: italic;
+            font-size: 0.92rem;
+            padding: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .empty-slot::before {
+            content: "⏳";
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 24px;
             font-size: 0.85rem;
             color: #6B7280;
             border-top: 1px solid var(--color-border);
+            background-color: var(--color-gray-bg);
         }
     </style>
 </head>
@@ -256,362 +371,486 @@
             <p><strong>Instituciones Aliadas:</strong> Cáritas Diocesana Guasdualito &bull; PMA (Programa Mundial de Alimentos)</p>
         </div>
 
-        <!-- ================= MES DE AGOSTO ================= -->
-        <div class="month-section">
-            <div class="month-header" onclick="toggleMonth(this)">
-                Jornada de Agosto de 2026
+        <!-- Buscador Inteligente Global -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <input type="text" id="globalSearch" class="search-input" placeholder="Buscar por comunidad (ej. 5 de Julio, Sinaí) o fecha (ej. 26/08, 09/09)..." onkeyup="filterContent()">
             </div>
-            <div class="month-content">
-                <div class="basket-spec">
-                    <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (1 aceite, 1 sal).
+        </div>
+
+        <!-- Navegación por Pestañas (Tabs) -->
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab(event, 'agosto')">Agosto</button>
+            <button class="tab-btn" onclick="switchTab(event, 'septiembre')">Septiembre</button>
+            <button class="tab-btn" onclick="switchTab(event, 'octubre')">Octubre</button>
+        </div>
+
+        <!-- ================= MES DE AGOSTO ================= -->
+        <div id="agosto" class="tab-content active month-tab">
+            <div class="basket-spec">
+                <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (1 aceite, 1 sal).
+            </div>
+
+            <!-- Fecha 26/08/2026 -->
+            <div class="date-group" data-date="26/08/2026">
+                <div class="date-title">Fecha: 26/08/2026</div>
+                
+                <div class="community-card" data-community="5 de julio">
+                    <h5>Comunidad: 5 de Julio</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>420 canastas (840 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>356 canastas (712 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>64 canastas (128 kits)</strong> (Resguardadas en depósito)</div>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1L9aR9djevAt_Fhd4wuOBSdwgMzlb8Qi8/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 26/08/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 26/08/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: 5 de Julio</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>420 canastas (840 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>356 canastas (712 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>64 canastas (128 kits)</strong> (Resguardadas en depósito de la iglesia)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1L9aR9djevAt_Fhd4wuOBSdwgMzlb8Qi8/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="el centro">
+                    <h5>Comunidad: El Centro</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>140 base + 5 extra = 145 canastas (290 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>145 canastas (290 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>59 canastas (118 kits)</strong> (En depósito de la iglesia)</div>
                     </div>
-
-                    <div class="community-card">
-                        <h5>Comunidad: El Centro</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>140 base + 5 extra = 145 canastas (290 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>145 canastas (290 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>59 canastas (118 kits)</strong> (En depósito de la iglesia)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1pfTo68AnVio3V_TH40u9aKAarIQs_2og/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
-                    </div>
-
-                    <div class="community-card">
-                        <h5>Comunidad: La Flor de Apure</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>140 base + 4 extra = 144 canastas (288 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>144 canastas (288 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>55 canastas (110 kits)</strong> (Remanentes finales en depósito)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1tML1lzlFZItFEJXtQy0sCfWhThY6upVA/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
-                    </div>
+                    <a href="https://drive.google.com/file/d/1pfTo68AnVio3V_TH40u9aKAarIQs_2og/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 27/08/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 27/08/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: Sinaí</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>320 canastas (640 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>286 canastas (572 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>34 canastas (68 kits)</strong> (Depositadas de forma independiente)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1i3W5yoaPkLs24CaVDlZZD9oD8zdQvyY0/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="la flor de apure">
+                    <h5>Comunidad: La Flor de Apure</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>140 base + 4 extra = 144 canastas (288 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>144 canastas (288 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>55 canastas (110 kits)</strong> (Remanentes finales)</div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1tML1lzlFZItFEJXtQy0sCfWhThY6upVA/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+            </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: San Francisco</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>300 canastas (600 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>288 canastas (576 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>12 canastas (24 kits)</strong> (Trasladadas al depósito de la iglesia)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1pTj-Z4f12ZmcXSMUyszH8PZhFXVhdPsc/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+            <!-- Fecha 27/08/2026 -->
+            <div class="date-group" data-date="27/08/2026">
+                <div class="date-title">Fecha: 27/08/2026</div>
+                
+                <div class="community-card" data-community="sinaí sinai">
+                    <h5>Comunidad: Sinaí</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>320 canastas (640 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>286 canastas (572 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>34 canastas (68 kits)</strong></div>
                     </div>
-
-                    <div class="consolidated-box">
-                        <h4>Consolidado al Cierre de Fecha</h4>
-                        <p><strong>80 canastas acumuladas</strong> listas para el día siguiente (remanentes de Sinaí, San Francisco y lote previo).</p>
-                    </div>
+                    <a href="https://drive.google.com/file/d/1i3W5yoaPkLs24CaVDlZZD9oD8zdQvyY0/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 28/08/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 28/08/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: Los Caracaros</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>81 canastas (162 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>76 canastas (152 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>4 canastas (8 kits)</strong> (Tras préstamo interno de 1 unidad)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/12GAqvAN8VJWfRm809N3Nka-dZwTdMDjg/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="san francisco">
+                    <h5>Comunidad: San Francisco</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>300 canastas (600 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>288 canastas (576 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>12 canastas (24 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1pTj-Z4f12ZmcXSMUyszH8PZhFXVhdPsc/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: La Primavera</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>114 base + 1 en préstamo = 115 canastas (230 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>115 canastas (230 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1dXDJe9-k5vuSm9Aq5IpW2QCmWA7S_P4N/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
-                    </div>
+                <div class="consolidated-box">
+                    <h4>Consolidado al Cierre de Fecha</h4>
+                    <p><strong>80 canastas acumuladas</strong> listas para el día siguiente (remanentes de Sinaí, San Francisco y lote previo).</p>
+                </div>
+            </div>
 
-                    <div class="consolidated-box">
-                        <h4>Balance Final del Depósito</h4>
-                        <p><strong>25 canastas (50 kits)</strong> consolidadas al cierre de agosto.</p>
+            <!-- Fecha 28/08/2026 -->
+            <div class="date-group" data-date="28/08/2026">
+                <div class="date-title">Fecha: 28/08/2026</div>
+                
+                <div class="community-card" data-community="los caracaros">
+                    <h5>Comunidad: Los Caracaros</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>81 canastas (162 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>76 canastas (152 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>4 canastas (8 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/12GAqvAN8VJWfRm809N3Nka-dZwTdMDjg/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+
+                <div class="community-card" data-community="la primavera">
+                    <h5>Comunidad: La Primavera</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>114 base + 1 préstamo = 115 canastas (230 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>115 canastas (230 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>0 canastas (0 kits)</strong></div>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1dXDJe9-k5vuSm9Aq5IpW2QCmWA7S_P4N/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+
+                <div class="consolidated-box">
+                    <h4>Balance Final del Depósito</h4>
+                    <p><strong>25 canastas (50 kits)</strong> consolidadas al cierre de agosto.</p>
                 </div>
             </div>
         </div>
 
         <!-- ================= MES DE SEPTIEMBRE ================= -->
-        <div class="month-section">
-            <div class="month-header" onclick="toggleMonth(this)">
-                Jornada de Septiembre de 2026
+        <div id="septiembre" class="tab-content month-tab">
+            <!-- BLOQUE 1 -->
+            <div class="block-title">Bloque 1 de Septiembre</div>
+            <div class="basket-spec">
+                <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (4 aceites, 1 sal).
             </div>
-            <div class="month-content">
+
+            <!-- Fecha 09/09/2026 -->
+            <div class="date-group" data-date="09/09/2026">
+                <div class="date-title">Fecha: 09/09/2026</div>
                 
-                <!-- BLOQUE 1 -->
-                <div class="block-title">Bloque 1 de Septiembre</div>
-                <div class="basket-spec">
-                    <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (4 aceites, 1 sal).
+                <div class="community-card" data-community="la esperancita">
+                    <h5>Comunidad: La Esperancita</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>5 base + 25 depósito = 30 canastas (60 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>29 canastas (58 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>1 canasta (2 kits)</strong></div>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1KBRV7h-w8ZHIy9Y1gLy14axyq-ls_arZ/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 09/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 09/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: La Esperancita</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>5 base + 25 de depósito = 30 canastas (60 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>29 canastas (58 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1KBRV7h-w8ZHIy9Y1gLy14axyq-ls_arZ/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="barrio nuevo">
+                    <h5>Comunidad: Barrio Nuevo</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>169 canastas (338 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>157 canastas (314 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>12 canastas (24 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/19Xw4N5fd_nOrHjWNd7qbj__ly6bqgvb2/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+            </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: Barrio Nuevo</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>169 canastas (338 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>157 canastas (314 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>12 canastas (24 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/19Xw4N5fd_nOrHjWNd7qbj__ly6bqgvb2/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+            <!-- Fecha 10/09/2026 -->
+            <div class="date-group" data-date="10/09/2026">
+                <div class="date-title">Fecha: 10/09/2026</div>
+                
+                <div class="community-card" data-community="el progreso">
+                    <h5>Comunidad: El Progreso</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>48 canastas (96 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>47 canastas (94 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>1 canasta (2 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1LeQf76bPxED64wpxqAYdD5x2D5CpWskq/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 10/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 10/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: El Progreso</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>48 canastas (96 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>47 canastas (94 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1LeQf76bPxED64wpxqAYdD5x2D5CpWskq/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="santa rita">
+                    <h5>Comunidad: Santa Rita</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>71 canastas (142 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>68 canastas (136 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>3 canastas (6 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1hUWIYmiDSGGGPgXJAHrSfIGBP1qUyttW/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+            </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: Santa Rita</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>71 canastas (142 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>68 canastas (136 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>3 canastas (6 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1hUWIYmiDSGGGPgXJAHrSfIGBP1qUyttW/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+            <!-- Fecha 11/09/2026 -->
+            <div class="date-group" data-date="11/09/2026">
+                <div class="date-title">Fecha: 11/09/2026</div>
+                
+                <div class="community-card" data-community="santa maría maria">
+                    <h5>Comunidad: Santa María</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>49 canastas (98 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>46 canastas (92 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>3 canastas (6 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1yZTxa5PW1EomOciDHtckDqNDqpCUov4y/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 11/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 11/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: Santa María</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>49 canastas (98 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>46 canastas (92 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>3 canastas (6 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1yZTxa5PW1EomOciDHtckDqNDqpCUov4y/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="santa rosa">
+                    <h5>Comunidad: Santa Rosa</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>126 canastas (252 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>125 canastas (250 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>1 canasta (2 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/13TmD30aYqv4WDsi4giXrNYrCJ-7DZkIf/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+            </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: Santa Rosa</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>126 canastas (252 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>125 canastas (250 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/13TmD30aYqv4WDsi4giXrNYrCJ-7DZkIf/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+            <!-- Fecha 12/09/2026 -->
+            <div class="date-group" data-date="12/09/2026">
+                <div class="date-title">Fecha: 12/09/2026</div>
+                
+                <div class="community-card" data-community="ripial">
+                    <h5>Comunidad: Ripial</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>148 canastas (296 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>144 canastas (288 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>4 canastas (8 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1_3IrOWzjoU268HRIVdqgiuAG9vC-GAZi/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 12/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 12/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: Ripial</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>148 canastas (296 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>144 canastas (288 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>4 canastas (8 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1_3IrOWzjoU268HRIVdqgiuAG9vC-GAZi/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="la capilla">
+                    <h5>Comunidad: La Capilla</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>162 canastas (324 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>160 canastas (320 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>2 canastas (4 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1uZWguOkiZsNYxz9_ug613MdQRjfT8FfL/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: La Capilla</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>162 canastas (324 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>160 canastas (320 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>2 canastas (4 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1uZWguOkiZsNYxz9_ug613MdQRjfT8FfL/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="arenales">
+                    <h5>Comunidad: Arenales</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>8 base + excedentes previos</strong></div>
+                        <div><span>Entregadas</span><strong>35 canastas (70 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>0 canastas (0 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1BS9QGLm2CAumf60HBsRl1Xby2Gkt9p1o/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: Arenales</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>8 base + excedentes de días previos</strong></div>
-                            <div><span>Entregadas:</span> <strong>35 canastas (70 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong> (Cerrado exacto)</div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1BS9QGLm2CAumf60HBsRl1Xby2Gkt9p1o/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
-                    </div>
-
-                    <div class="note-box">
-                        <strong>Nota Adicional de Logística:</strong> En uno de los camiones llegaron 75 aceites para compensar los tres aceites que hacían falta para la comunidad, con el fin de compensar los tres aceites de las 25 canastas sobrantes del mes pasado y entregárselo a la comunidad La Esperancita.
-                        <div style="margin-top: 10px;">
-                            <a href="https://drive.google.com/file/d/1mqo3btofv17QakXNwrZew4WkLMAE9TDe/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Soporte (Excedente de 75 aceites)</a>
-                        </div>
-                    </div>
-
-                    <div class="consolidated-box">
-                        <h4>Consolidado General del Bloque 1 (Septiembre)</h4>
-                        <p><strong>Total Asignadas:</strong> 811 canastas (1.622 kits) [786 enviadas por camiones + 25 del depósito previo].<br>
-                        <strong>Total Entregadas:</strong> 811 canastas (1.622 kits).<br>
-                        <strong>Total Remanentes:</strong> 0 canastas (0 kits).</p>
+                <div class="note-box">
+                    <strong>Nota Adicional de Logística:</strong> Llegaron 75 aceites para compensar los tres aceites faltantes de las 25 canastas sobrantes del mes pasado y entregárselo a La Esperancita.
+                    <div style="margin-top: 10px;">
+                        <a href="https://drive.google.com/file/d/1mqo3btofv17QakXNwrZew4WkLMAE9TDe/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Soporte (Excedente 75 aceites)</a>
                     </div>
                 </div>
 
-                <!-- BLOQUE 2 -->
-                <div class="block-title" style="margin-top: 30px;">Bloque 2 de Septiembre (Reporte Oficial EPR)</div>
-                <div class="basket-spec">
-                    <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (2 aceites, 2 sales).
+                <div class="consolidated-box">
+                    <h4>Consolidado General del Bloque 1 (Septiembre)</h4>
+                    <p><strong>Total Asignadas:</strong> 811 canastas (1.622 kits)<br>
+                    <strong>Total Entregadas:</strong> 811 canastas (1.622 kits)<br>
+                    <strong>Total Remanentes:</strong> 0 canastas (0 kits).</p>
+                </div>
+            </div>
+
+            <!-- BLOQUE 2 -->
+            <div class="block-title" style="margin-top: 30px;">Bloque 2 de Septiembre (Reporte Oficial EPR)</div>
+            <div class="basket-spec">
+                <strong>Especificación de la canasta:</strong> Una canasta equivale a dos kits (2 aceites, 2 sales).
+            </div>
+
+            <!-- Fecha 23/09/2026 -->
+            <div class="date-group" data-date="23/09/2026">
+                <div class="date-title">Fecha: 23/09/2026</div>
+                
+                <div class="community-card" data-community="5 de julio">
+                    <h5>Comunidad: 5 de Julio</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>355 canastas (710 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>354 canastas (708 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>1 canasta (2 kits)</strong></div>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1SZKowr7Dw68HOgmo8DZWE_mHcY71cW0k/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 23/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 23/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: 5 de Julio</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>355 canastas (710 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>354 canastas (708 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>1 canasta (2 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1SZKowr7Dw68HOgmo8DZWE_mHcY71cW0k/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="casco central el centro">
+                    <h5>Comunidad: Casco Central</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>143 canastas (286 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>139 canastas (278 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>4 canastas (8 kits)</strong></div>
                     </div>
-
-                    <div class="community-card">
-                        <h5>Comunidad: Casco Central</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>143 canastas (286 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>139 canastas (278 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>4 canastas (8 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/19O-AQs2NokfqDmFvCKmCziRigfF5LzYu/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
-                    </div>
-
-                    <div class="community-card">
-                        <h5>Comunidad: Flor de Apure</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>142 canastas (284 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>137 canastas (274 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>5 canastas (10 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1cKZxXiCJVRXLPtkJW34iH2jD_PffR0tj/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
-                    </div>
+                    <a href="https://drive.google.com/file/d/19O-AQs2NokfqDmFvCKmCziRigfF5LzYu/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 24/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 24/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: Sinaí</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>286 canastas (572 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>277 canastas (554 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>9 canastas (18 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1UgsOrnju14WPAVLgS_8qndOzo07VW8nz/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="la flor de apure">
+                    <h5>Comunidad: Flor de Apure</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>142 canastas (284 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>137 canastas (274 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>5 canastas (10 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1cKZxXiCJVRXLPtkJW34iH2jD_PffR0tj/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+            </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: San Francisco</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>286 canastas (572 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>278 canastas (556 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>8 canastas (16 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1DniE2VqS_jv3X6DKj_sGsCeMcanwcV1h/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+            <!-- Fecha 24/09/2026 -->
+            <div class="date-group" data-date="24/09/2026">
+                <div class="date-title">Fecha: 24/09/2026</div>
+                
+                <div class="community-card" data-community="sinaí sinai">
+                    <h5>Comunidad: Sinaí</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>286 canastas (572 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>277 canastas (554 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>9 canastas (18 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1UgsOrnju14WPAVLgS_8qndOzo07VW8nz/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
-                <!-- Fecha 25/09/2026 -->
-                <div class="date-group">
-                    <div class="date-title">Fecha: 25/09/2026</div>
-                    
-                    <div class="community-card">
-                        <h5>Comunidad: Los Caracaros</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>76 canastas (152 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>76 canastas (152 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1njD-uIx2WO2dzsaXmwfxymd4LFMEGQQX/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+                <div class="community-card" data-community="san francisco">
+                    <h5>Comunidad: San Francisco</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>286 canastas (572 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>278 canastas (556 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>8 canastas (16 kits)</strong></div>
                     </div>
+                    <a href="https://drive.google.com/file/d/1DniE2VqS_jv3X6DKj_sGsCeMcanwcV1h/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
+            </div>
 
-                    <div class="community-card">
-                        <h5>Comunidad: La Primavera</h5>
-                        <div class="community-stats">
-                            <div><span>Asignadas:</span> <strong>115 canastas (230 kits)</strong></div>
-                            <div><span>Entregadas:</span> <strong>115 canastas (230 kits)</strong></div>
-                            <div><span>Remanentes:</span> <strong>0 canastas (0 kits)</strong></div>
-                        </div>
-                        <a href="https://drive.google.com/file/d/1kTFUDFODy-zTwNlx5ZDVslKqHWeYnPMW/view?usp=drivesdk" class="btn-waybill" target="_blank">Descargar Waybill</a>
+            <!-- Fecha 25/09/2026 -->
+            <div class="date-group" data-date="25/09/2026">
+                <div class="date-title">Fecha: 25/09/2026</div>
+                
+                <div class="community-card" data-community="los caracaros">
+                    <h5>Comunidad: Los Caracaros</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>76 canastas (152 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>76 canastas (152 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>0 canastas (0 kits)</strong></div>
                     </div>
-
-                    <div class="consolidated-box">
-                        <h4>Consolidado General del Bloque 2</h4>
-                        <p><strong>Total Asignadas:</strong> 1.403 canastas (2.806 kits).<br>
-                        <strong>Total Entregadas:</strong> 1.376 canastas (2.752 kits).<br>
-                        <strong>Total Remanentes:</strong> 27 canastas (54 kits).<br>
-                        <strong>Resumen de Excedentes Adicionales Totales:</strong> 54 aceites y 54 sales.</p>
-                    </div>
+                    <a href="https://drive.google.com/file/d/1njD-uIx2WO2dzsaXmwfxymd4LFMEGQQX/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
                 </div>
 
+                <div class="community-card" data-community="la primavera">
+                    <h5>Comunidad: La Primavera</h5>
+                    <div class="community-stats">
+                        <div><span>Asignadas</span><strong>115 canastas (230 kits)</strong></div>
+                        <div><span>Entregadas</span><strong>115 canastas (230 kits)</strong></div>
+                        <div><span>Remanentes</span><strong>0 canastas (0 kits)</strong></div>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1kTFUDFODy-zTwNlx5ZDVslKqHWeYnPMW/view?usp=drivesdk" class="btn-waybill" target="_blank">📄 Descargar Waybill</a>
+                </div>
             </div>
         </div>
 
+        <!-- ================= MES DE OCTUBRE ================= -->
+        <div id="octubre" class="tab-content month-tab">
+            <!-- JORNADA 1 -->
+            <div class="block-title">Jornada 1 de Octubre</div>
+            
+            <div class="date-group" data-date="01/10/2026">
+                <div class="date-title">Fecha: 01/10/2026</div>
+                <div class="community-card" data-community="5 de julio">
+                    <h5>Comunidad: 5 de Julio</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <div class="date-group" data-date="07/10/2026">
+                <div class="date-title">Fecha: 07/10/2026</div>
+                <div class="community-card" data-community="el centro casco central">
+                    <h5>Comunidad: El Centro</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <div class="date-group" data-date="08/10/2026">
+                <div class="date-title">Fecha: 08/10/2026</div>
+                <div class="community-card" data-community="la flor de apure">
+                    <h5>Comunidad: La Flor de Apure</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <div class="date-group" data-date="09/10/2026">
+                <div class="date-title">Fecha: 09/10/2026</div>
+                <div class="community-card" data-community="sinaí sinai">
+                    <h5>Comunidad: Sinaí</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <div class="date-group" data-date="10/10/2026">
+                <div class="date-title">Fecha: 10/10/2026</div>
+                <div class="community-card" data-community="san francisco">
+                    <h5>Comunidad: San Francisco</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <!-- JORNADA 2 -->
+            <div class="block-title" style="margin-top: 30px;">Jornada 2 de Octubre</div>
+
+            <div class="date-group" data-date="21/10/2026">
+                <div class="date-title">Fecha: 21/10/2026</div>
+                <div class="community-card" data-community="los caracaros">
+                    <h5>Comunidad: Los Caracaros</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <div class="date-group" data-date="22/10/2026">
+                <div class="date-title">Fecha: 22/10/2026</div>
+                <div class="community-card" data-community="la primavera">
+                    <h5>Comunidad: La Primavera</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+
+            <div class="date-group" data-date="23/10/2026">
+                <div class="date-title">Fecha: 23/10/2026</div>
+                <div class="community-card" data-community="la esperancita">
+                    <h5>Comunidad: La Esperancita</h5>
+                    <div class="empty-slot">Pendiente por registrar datos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
         <footer>
-            <p>Cáritas Diocesana Guasdualito &bull; PMA &copy; 2026. Todos los derechos reservados.</p>
+            Cáritas Diocesana Guasdualito &bull; Sistema de Gestión Logística
         </footer>
     </div>
 
+    <!-- Script de Pestañas y Buscador Inteligente -->
     <script>
-        // Función interactiva para expandir o contraer las secciones de los meses
-        function toggleMonth(headerElement) {
-            const section = headerElement.parentElement;
-            section.classList.toggle('active');
+        function switchTab(evt, monthId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(monthId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        function filterContent() {
+            const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+            const months = document.querySelectorAll('.month-tab');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+
+            if (query === "") {
+                document.querySelectorAll('.community-card').forEach(card => card.style.display = "");
+                document.querySelectorAll('.date-group').forEach(group => group.style.display = "");
+                months.forEach(m => m.style.display = "");
+                return;
+            }
+
+            months.forEach((month, index) => {
+                let monthHasMatch = false;
+                const dateGroups = month.querySelectorAll('.date-group');
+
+                dateGroups.forEach(group => {
+                    const dateText = group.getAttribute('data-date') || "";
+                    const cards = group.querySelectorAll('.community-card');
+                    let groupHasMatch = false;
+
+                    cards.forEach(card => {
+                        const commText = card.getAttribute('data-community') || "";
+                        const cardText = card.innerText.toLowerCase();
+
+                        if (commText.includes(query) || cardText.includes(query) || dateText.includes(query)) {
+                            card.style.display = "";
+                            groupHasMatch = true;
+                            monthHasMatch = true;
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+
+                    if (groupHasMatch || dateText.includes(query)) {
+                        group.style.display = "";
+                        if (dateText.includes(query)) monthHasMatch = true;
+                    } else {
+                        group.style.display = "none";
+                    }
+                });
+
+                if (monthHasMatch) {
+                    tabButtons[index].style.display = "";
+                } else {
+                    tabButtons[index].style.display = "none";
+                }
+            });
         }
     </script>
 </body>
