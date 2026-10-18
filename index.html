@@ -1,9 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario de Logística - Cáritas Diocesana Guasdualito y PMA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #F4F4F4;
@@ -207,6 +210,20 @@
 
         .tab-content.active {
             display: flex;
+            animation: fadeBlur 0.45s ease-in-out;
+        }
+
+        @keyframes fadeBlur {
+            0% {
+                opacity: 0;
+                filter: blur(8px);
+                transform: translateY(6px);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
         }
 
         .section-card {
@@ -493,18 +510,590 @@
             border-top: 1px solid var(--border-color);
         }
     </style>
+
+    <!-- =================== UI MODERNA (refresco visual) =================== -->
+    <style>
+        :root {
+            --bg-color: #EDF0F6;
+            --bg-image:
+                radial-gradient(52rem 38rem at 112% -14%, rgba(225, 20, 43, 0.20) 0%, transparent 60%),
+                radial-gradient(46rem 36rem at -14% 2%, rgba(37, 99, 235, 0.16) 0%, transparent 58%),
+                radial-gradient(38rem 28rem at 50% 120%, rgba(245, 158, 11, 0.14) 0%, transparent 60%);
+            --card-bg: #FFFFFF;
+            --card-elevated: #FFFFFF;
+            --surface-2: #F4F7FC;
+            --text-main: #0D1320;
+            --text-muted: #5A6577;
+            --primary: #E1142B;
+            --primary-dark: #AF0F20;
+            --primary-light: #FFECEF;
+            --accent: #2563EB;
+            --gold: #F59E0B;
+            --border-color: #E4E9F2;
+            --radius: 20px;
+            --radius-sm: 14px;
+            --radius-pill: 999px;
+            --shadow-sm: 0 1px 2px rgba(13, 19, 32, 0.06);
+            --shadow: 0 14px 34px -18px rgba(13, 19, 32, 0.35), 0 2px 6px -3px rgba(13, 19, 32, 0.08);
+            --shadow-lg: 0 34px 70px -24px rgba(13, 19, 32, 0.45);
+            --ring: 0 0 0 4px rgba(225, 20, 43, 0.16);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0A0D13;
+            --bg-image:
+                radial-gradient(52rem 38rem at 112% -14%, rgba(225, 20, 43, 0.26) 0%, transparent 60%),
+                radial-gradient(46rem 36rem at -14% 2%, rgba(59, 130, 246, 0.20) 0%, transparent 58%),
+                radial-gradient(38rem 28rem at 50% 120%, rgba(245, 158, 11, 0.12) 0%, transparent 60%);
+            --card-bg: #131824;
+            --card-elevated: #1A2130;
+            --surface-2: #1A2130;
+            --text-main: #F5F7FA;
+            --text-muted: #98A2B3;
+            --primary: #FF4757;
+            --primary-dark: #E1142B;
+            --primary-light: #2A1419;
+            --border-color: #263041;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+            --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
+            --shadow-lg: 0 40px 70px -26px rgba(0, 0, 0, 0.95);
+            --ring: 0 0 0 4px rgba(255, 71, 87, 0.22);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .brand-title, .section-title, .modal-title, .metric-card strong,
+        .progress-header, .date-block-title, .month-tab, .theme-toggle, .btn-waybill {
+            font-family: "Plus Jakarta Sans", "Inter", "Segoe UI", system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: var(--bg-image);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--text-main);
+            padding: 0 20px 0;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        ::selection { background: var(--primary); color: #fff; }
+
+        .main-wrapper { max-width: 1060px; gap: 20px; padding-bottom: 12px; }
+
+        /* ---------- Barra fija superior ---------- */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px 0 14px;
+            background-color: var(--bg-color);
+            background-image: var(--bg-image);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .top-header-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 10px 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .brand-title {
+            font-size: 1.12rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            text-transform: none;
+            flex: 1 1 auto;
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+        .expand-toggle,
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+            background-color: var(--surface-2);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-pill);
+            padding: 8px 15px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: "Plus Jakarta Sans", "Inter", "Segoe UI", system-ui, sans-serif;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .expand-toggle:hover,
+        .theme-toggle:hover { background-color: var(--primary); color: #fff; border-color: transparent; }
+
+        /* ---------- Selector de mes (desplegable) ---------- */
+        .month-select-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .month-select-icon { font-size: 1.05rem; line-height: 1; }
+        .month-select {
+            appearance: none;
+            -webkit-appearance: none;
+            flex: 1 1 auto;
+            min-width: 0;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-2);
+            color: var(--text-main);
+            font: inherit;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 11px 38px 11px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .month-select:focus { border-color: var(--primary); box-shadow: var(--ring); }
+        .month-select option { background-color: var(--card-bg); color: var(--text-main); }
+        .month-select-arrow {
+            position: absolute;
+            right: 14px;
+            pointer-events: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ---------- Ficha de logística ---------- */
+        .logistics-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            box-shadow: var(--shadow);
+        }
+        .logistics-card h3 {
+            font-size: 0.82rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .logistics-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 3px; }
+        .logistics-card p strong { color: var(--text-main); font-weight: 600; }
+
+        /* ---------- Buscador avanzado ---------- */
+        .search-shell { position: relative; }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 116px 16px 50px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-pill);
+            background-color: var(--card-bg);
+            background-repeat: no-repeat;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            box-shadow: var(--shadow);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .search-input:focus { border-color: var(--primary); box-shadow: var(--ring), var(--shadow); }
+
+        .search-kbd {
+            position: absolute;
+            top: 50%;
+            right: 52px;
+            transform: translateY(-50%);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            background-color: var(--surface-2);
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .search-clear {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background-color: var(--surface-2);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            line-height: 1;
+        }
+        .search-clear.show { display: flex; }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            z-index: 120;
+            display: none;
+            max-height: 62vh;
+            overflow-y: auto;
+            padding: 8px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+        .search-results.show { display: block; }
+
+        .search-result {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 11px 12px;
+            border: none;
+            border-radius: 13px;
+            background: transparent;
+            color: var(--text-main);
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        .search-result:hover, .search-result.active { background-color: var(--primary-light); }
+        .search-result .sr-icon { font-size: 1.05rem; }
+        .search-result .sr-body { flex: 1; }
+        .search-result .sr-name { font-weight: 700; font-size: 0.92rem; }
+        .search-result .sr-meta { font-size: 0.75rem; color: var(--text-muted); }
+        .search-empty { padding: 18px; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+
+        /* ---------- Secciones y tarjetas ---------- */
+        .section-card {
+            position: relative;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 26px;
+            box-shadow: var(--shadow);
+        }
+        .section-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--gold), var(--accent));
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.16rem;
+            font-weight: 800;
+            letter-spacing: -0.015em;
+            margin-bottom: 6px;
+        }
+        .section-title::before {
+            content: "";
+            flex: 0 0 auto;
+            width: 5px;
+            height: 20px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+        }
+        .section-subtitle { font-size: 0.88rem; margin-bottom: 18px; }
+
+        .basket-spec {
+            background: linear-gradient(135deg, var(--primary-light), transparent 75%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 13px 16px;
+            margin-bottom: 18px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+        }
+
+        .date-block-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 9px 15px;
+            border-radius: var(--radius-pill);
+            margin: 20px 0 14px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+        .date-block-title:hover { transform: translateY(-1px); box-shadow: var(--shadow); opacity: 0.94; }
+        .date-block-title:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+        .date-block-title::after {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(45deg) translateY(-1px);
+            transition: transform 0.3s ease;
+        }
+        .date-block-title[aria-expanded="false"]::after { transform: rotate(-45deg); }
+        .date-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 21px;
+            height: 21px;
+            padding: 0 7px;
+            border-radius: var(--radius-pill);
+            background-color: var(--primary);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        /* Despliegue animado de cada fecha */
+        .date-block-body {
+            display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.32s ease, opacity 0.25s ease;
+            opacity: 1;
+        }
+        .date-block-body.collapsed { grid-template-rows: 0fr; opacity: 0; }
+        .date-block-inner { overflow: hidden; min-height: 0; }
+
+        .communities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .community-item {
+            position: relative;
+            overflow: hidden;
+            background-color: var(--card-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            gap: 6px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+        }
+        .community-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-light), transparent 65%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .community-item:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .community-item:hover::after { opacity: 1; }
+        .community-item h5 { position: relative; z-index: 1; font-size: 1.02rem; font-weight: 800; color: var(--text-main); }
+        .community-item p { position: relative; z-index: 1; font-size: 0.85rem; color: var(--text-muted); }
+
+        /* ---------- Progreso ---------- */
+        .progress-wrapper {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        .progress-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem; margin-bottom: 12px; }
+        .progress-bar-bg { background-color: var(--border-color); border-radius: var(--radius-pill); height: 12px; overflow: hidden; }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            box-shadow: 0 0 14px rgba(225, 20, 43, 0.5);
+            transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* ---------- Métricas ---------- */
+        .balance-metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+        .metric-card {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 22px 18px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .metric-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: var(--shadow); }
+        .metric-card span { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; font-weight: 800; color: var(--text-muted); }
+        .metric-card strong { font-size: 1.22rem; font-weight: 800; color: var(--text-main); }
+
+        .consolidated-box {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--text-main);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-top: 14px;
+            font-size: 0.88rem;
+        }
+        .consolidated-box h4 { margin-bottom: 8px; font-weight: 800; font-size: 0.92rem; }
+        .consolidated-box p { color: var(--text-muted); margin-bottom: 4px; }
+        .consolidated-box p strong { color: var(--text-main); }
+
+        .note-box {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            border-radius: 14px;
+            padding: 15px 17px;
+            font-size: 0.88rem;
+            margin-top: 14px;
+        }
+
+        /* ---------- Modal ---------- */
+        .modal-overlay { background-color: rgba(6, 9, 15, 0.62); backdrop-filter: blur(8px); }
+        .modal-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            max-width: 580px;
+            width: 100%;
+            padding: 26px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: popIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-title { font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 18px; }
+        .modal-stat-row {
+            background-color: var(--surface-2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 11px 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.88rem;
+        }
+
+        .btn-waybill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 14px 28px -14px rgba(225, 20, 43, 0.95);
+            transition: filter 0.2s ease, transform 0.15s ease;
+        }
+        .btn-waybill:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+        .scroll-top {
+            border-radius: 16px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 16px 30px -12px rgba(225, 20, 43, 0.9);
+            transition: transform 0.15s ease;
+        }
+        .scroll-top:hover { transform: translateY(-2px); }
+
+        footer { max-width: 1060px; padding: 26px 0; font-size: 0.82rem; }
+
+        /* ---------- Búsqueda: filtro + resaltado ---------- */
+        .hidden-by-search { display: none !important; }
+
+        @keyframes flashCard {
+            0% { box-shadow: 0 0 0 0 rgba(225, 20, 43, 0.55); }
+            70% { box-shadow: 0 0 0 14px rgba(225, 20, 43, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(225, 20, 43, 0); }
+        }
+        .community-item.flash { animation: flashCard 1.2s ease-out 2; border-color: var(--primary); }
+
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 999px; border: 2px solid var(--bg-color); }
+        ::-webkit-scrollbar-thumb:hover { background-color: var(--text-muted); }
+
+        @media (max-width: 680px) {
+            body { padding: 0 12px 0; }
+            .section-card { padding: 20px 16px; }
+            .month-tabs { grid-template-columns: 1fr; }
+            .month-tab { font-size: 0.84rem; padding: 12px 10px; }
+            .brand-title { font-size: 0.98rem; }
+            .theme-toggle { padding: 8px 11px; font-size: 0.78rem; }
+            .expand-toggle { padding: 8px 11px; font-size: 0.78rem; }
+            #expandText { display: none; }
+            .search-input { padding: 15px 62px 15px 46px; }
+            .search-kbd { display: none; }
+            .balance-metrics-grid, .communities-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
     <div class="main-wrapper">
-        <!-- Encabezado y Botón de Modo Resaltado -->
-        <div class="top-header-card">
-            <div class="brand-title">
-                🔴 Cáritas Diocesana
+        <div class="sticky-header">
+            <!-- Encabezado y Botón de Modo Resaltado -->
+            <div class="top-header-card">
+                <div class="month-select-wrap">
+                    <span class="month-select-icon">📅</span>
+                    <select class="month-select" id="monthSelect" aria-label="Seleccionar mes" onchange="switchMonth(this.value, this.options[this.selectedIndex].text)">
+                        <option value="agosto">Agosto 2026</option>
+                        <option value="septiembre">Septiembre 2026</option>
+                        <option value="octubre">Octubre 2026</option>
+                    </select>
+                    <span class="month-select-arrow">▾</span>
+                </div>
+                <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
+                    <span id="themeIcon">🌙</span> <span id="themeText">Modo Oscuro</span>
+                </button>
             </div>
-            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
-                <span id="themeIcon">🌙</span> <span id="themeText">Modo Oscuro</span>
-            </button>
         </div>
 
         <!-- Información del Logista -->
@@ -514,20 +1103,13 @@
             <p><strong>Instituciones Aliadas:</strong> Cáritas Diocesana Guasdualito &bull; PMA (Programa Mundial de Alimentos)</p>
         </div>
 
-        <!-- Selector de Mes -->
-        <div class="month-selector-card" onclick="toggleMonthMenu(event)">
-            <span id="selectedMonthLabel">📅 Seleccionar Mes: Agosto 2026</span>
-            <span>▼</span>
-            <div class="month-dropdown-menu" id="monthDropdown">
-                <div class="month-option" onclick="switchMonth('agosto', 'Agosto 2026')">📅 Agosto 2026</div>
-                <div class="month-option" onclick="switchMonth('septiembre', 'Septiembre 2026')">📅 Septiembre 2026</div>
-                <div class="month-option" onclick="switchMonth('octubre', 'Octubre 2026')">📅 Octubre 2026</div>
-            </div>
-        </div>
-
-        <!-- Buscador Global -->
-        <div>
-            <input type="text" id="globalSearch" class="search-input" placeholder="Buscar por comunidad (ej. 5 de Julio, Sinaí) o fecha..." onkeyup="filterContent()">
+        <!-- Buscador Global Avanzado -->
+        <div class="search-shell">
+            <input type="text" id="globalSearch" class="search-input" placeholder="Buscar una comunidad… (ej. 5 de Julio, Sinaí, Barrio Nuevo)" autocomplete="off" spellcheck="false"
+                   oninput="runSearch(this.value)" onkeydown="searchKeydown(event)" onfocus="runSearch(this.value)">
+            <kbd class="search-kbd">Ctrl K</kbd>
+            <button type="button" class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Limpiar búsqueda">×</button>
+            <div class="search-results" id="searchResults" role="listbox"></div>
         </div>
 
         <!-- ================= MES DE AGOSTO ================= -->
@@ -828,7 +1410,7 @@
                 <div class="communities-grid" style="margin-bottom: 16px;">
                     <div class="community-item" onclick="openModalOctubre('La Esperancita (09/10)', {asignadas: '3 canastas 6 kits + 27 canastas 54 kits remanentes de septiembre = 30 canastas 60 kits', entregadas: '29 canastas 58 kits', remanente: '1 canasta 2 kits'}, {asignadas: '174 Aceites', entregadas: '116 Aceites', remanente: '58 Aceites'}, {asignadas: '3 sales + 27 sales remanentes de septiembre = 30 sales', entregadas: '29 Sales', remanente: '1 Sal'}, 'https://drive.google.com/file/d/1iS3xUpP0lvl6lu_xPaVherMZBDwu5ARn/view?usp=drive_link')">
                         <h5>📍 La Esperancita</h5>
-                        <p>👥 Asignadas: 30 canastas (60 kits)</p>
+                        <p>👥 Asignadas: 3 canastas (6 kits)</p>
                     </div>
                     <div class="community-item" onclick="openModalOctubre('Barrio Nuevo (09/10)', {asignadas: '159 canastas 318 kits', entregadas: '152 canastas 304 kits', remanente: '7 canastas 14 kits'}, {asignadas: '636 Aceites', entregadas: '608 Aceites', remanente: '28 Aceites'}, {asignadas: '159 sales', entregadas: '152 Sales', remanente: '7 Sales'}, 'https://drive.google.com/file/d/1B3rS8NHRr2soQ3GxYiopZpakrip-bIV0/view?usp=drive_link')">
                         <h5>📍 Barrio Nuevo</h5>
@@ -853,7 +1435,7 @@
                     </div>
 
                     <!-- El Progreso -->
-                    <div class="community-item" onclick="openModalOctubre('El Progreso (10/10)', {asignadas: '47 canastas 94 kits', entregadas: '47 canastas 94 kits', remanente: '0 canastas 0 kits'}, {asignadas: '80 Aceites + 108 del depósito = 188 aceites', entregadas: '188 Aceites', remanente: '0 canastas 0 kits'}, {asignadas: '20 sales + 27 sales sobrantes del depósito = 47 sales', entregadas: '47 Sales', remanente: '0 Sales'}, 'https://drive.google.com/file/d/1kYzxf5EHQRNAVUK_Wi2L8qPCuGTcb0AJ/view?usp=drive_link')">
+                    <div class="community-item" onclick="openModalOctubre('El Progreso (10/10)', {asignadas: '47 canastas 94 kits', entregadas: '47 canastas 94 kits', remanente: '0 canastas 0 kits'}, {asignadas: '80 Aceites + 120 del depósito = 188 aceites', entregadas: '188 Aceites', remanente: '0 canastas 0 kits'}, {asignadas: '20 sales + 27 sales sobrantes del depósito = 47 sales', entregadas: '47 Sales', remanente: '0 Sales'}, 'https://drive.google.com/file/d/1kYzxf5EHQRNAVUK_Wi2L8qPCuGTcb0AJ/view?usp=drive_link')">
                         <h5>📍 El Progreso</h5>
                         <p>👥 Asignadas: 47 canastas (94 kits)</p>
                         <p style="font-size: 0.8rem; color: var(--primary); margin-top: 4px;">⚠️ Incluye nota de Waybills y depósitos</p>
@@ -874,7 +1456,52 @@
                     <p><strong>• 32 aceites</strong> (108 aceites fueron extraídos del depósito del total inicial que tenía de 140 del día anterior)</p>
                     <p><strong>• 8 sales</strong> (27 sales fueron extraídas del total inicial de 35 sales del día anterior)</p>
                 </div>
+
             </div> <!-- Cierre de la tarjeta de la sección -->
+
+            <!-- ================= BLOQUE 2 DE OCTUBRE ================= -->
+            <div class="section-card">
+                <div class="section-title">🚀 Bloque 2 de Octubre</div>
+                <div class="basket-spec">
+                    <strong>📦 Especificación de la canasta:</strong> Una canasta equivale a dos kits (4 aceites, 1 sal).
+                </div>
+
+                <div class="date-block-title">Fecha: 15/10/2026</div>
+                <div class="communities-grid" style="margin-bottom: 16px;">
+                    <div class="community-item" onclick="openModal('Santa Maria (15/10)', '39 canastas + 8 canastas del depósito = 47 canastas (94 kits)', '47 canastas (94 kits)', '0 canastas (0 kits)', 'https://drive.google.com/file/d/1dQKMiRiRXnDanpwXB_tYrT_rNbbZhxZJ/view?usp=sharing')">
+                        <h5>📍 Santa Maria</h5>
+                        <p>👥 Asignadas: 39 canastas + 8 del depósito = 47 canastas (94 kits)</p>
+                    </div>
+                    <div class="community-item" onclick="openModal('Santa Rosa (15/10)', '125 canastas (250 kits)', '125 canastas (250 kits)', '0 canastas (0 kits)', 'https://drive.google.com/file/d/1i_J9kWEEA_yl-myr_CFeMEI5uAZ0SzEi/view?usp=drive_link')">
+                        <h5>📍 Santa Rosa</h5>
+                        <p>👥 Asignadas: 125 canastas (250 kits)</p>
+                    </div>
+                </div>
+                <div class="consolidated-box">
+                    <h4>📊 Conteo de Remanentes (Fecha 15/10):</h4>
+                    <p><strong>• 0 canastas (0 kits)</strong> (no queda excedentes de canastas las 8 canastas fueron extraídas para la comunidad de Santa Maria)</p>
+                </div>
+
+                <div class="date-block-title" style="margin-top: 20px;">Fecha: 16/10/2026</div>
+                <div class="communities-grid" style="margin-bottom: 16px;">
+                    <div class="community-item" onclick="openModal('Ripial (16/10)', '145 canastas (290 kits)', '144 canastas (288 kits)', '1 canasta (2 kits)', 'https://drive.google.com/file/d/17LJ9U9wf0xFmkIPeFtA0cH94Kdhrb7LK/view?usp=drive_link')">
+                        <h5>📍 Ripial</h5>
+                        <p>👥 Asignadas: 145 canastas (290 kits)</p>
+                    </div>
+                    <div class="community-item" onclick="openModal('La Capilla (16/10)', '160 canastas (320 kits)', '158 canastas (316 kits)', '2 canastas (4 kits)', 'https://drive.google.com/file/d/1tVT4QEoPDVZRlvFm4FmViLsUFPyrOLjs/view?usp=drive_link')">
+                        <h5>📍 La Capilla</h5>
+                        <p>👥 Asignadas: 160 canastas (320 kits)</p>
+                    </div>
+                    <div class="community-item" onclick="openModal('Arenales (16/10)', '34 canastas (68 kits)', '34 canastas (68 kits)', '0 canastas (0 kits)', 'https://drive.google.com/file/d/1CPHjjrOtuKBp96WszDpbVBJ2qhv1sd-W/view?usp=drive_link')">
+                        <h5>📍 Arenales</h5>
+                        <p>👥 Asignadas: 34 canastas (68 kits)</p>
+                    </div>
+                </div>
+                <div class="consolidated-box">
+                    <h4>📊 Conteo de Remanentes (Fecha 16/10):</h4>
+                    <p><strong>• 3 canastas (6 kits)</strong></p>
+                </div>
+            </div>
 
             <div class="section-card">
                 <div class="section-title">📊 Balance General de Octubre</div>
@@ -882,23 +1509,26 @@
                 <div class="progress-wrapper">
                     <div class="progress-header">
                         <span>📦 Eficiencia de Distribución</span>
-                        <span>En curso</span>
+                        <span>99%</span>
                     </div>
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 97%;"></div></div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 99%;"></div></div>
                 </div>
                 <div class="balance-metrics-grid">
                     <div class="metric-card">
                         <span>Total Asignadas</span>
-                        <strong>304 canastas (608 kits)</strong>
+                        <strong>780 canastas (1.560 kits)</strong>
                     </div>
                     <div class="metric-card">
                         <span>Total Entregadas</span>
-                        <strong>296 canastas (592 kits)</strong>
+                        <strong>804 canastas (1.608 kits)</strong>
                     </div>
                     <div class="metric-card">
                         <span>Total Remanentes</span>
-                        <strong>8 canastas (16 kits) 📦</strong>
+                        <strong>3 canastas (6 kits) 📦</strong>
                     </div>
+                </div>
+                <div class="note-box" style="margin-top: 14px;">
+                    <strong>💡 Nota del balance:</strong> Las <strong>asignadas</strong> reflejan solo las canastas nuevas de octubre. Las <strong>entregadas</strong> incluyen las 27 canastas de remanentes de septiembre reutilizadas (La Esperancita). El <strong>remanente final</strong> del mes es de 3 canastas (6 kits).
                 </div>
             </div>
         </div>
@@ -943,24 +1573,23 @@
             }
         }
 
-        // Selector de Mes Desplegable
-        function toggleMonthMenu(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('monthDropdown');
-            menu.classList.toggle('show');
-        }
-
-        function switchMonth(monthId, labelText) {
+        // Selector de Mes (desplegable)
+        function activateMonth(monthId, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(monthId).classList.add('active');
-            document.getElementById('selectedMonthLabel').innerText = '📅 Seleccionar Mes: ' + labelText;
-            document.getElementById('monthDropdown').classList.remove('show');
+            const target = document.getElementById(monthId);
+            if (target) target.classList.add('active');
+
+            const select = document.getElementById('monthSelect');
+            if (select) select.value = monthId;
+
+            document.querySelectorAll('.month-tab').forEach(b => b.classList.remove('active'));
+            const activeBtn = btn || document.querySelector('.month-tab[data-month="' + monthId + '"]');
+            if (activeBtn) activeBtn.classList.add('active');
         }
 
-        window.onclick = function(event) {
-            if (!event.target.closest('.month-selector-card')) {
-                document.getElementById('monthDropdown').classList.remove('show');
-            }
+        function switchMonth(monthId, labelText, btn) {
+            activateMonth(monthId, btn);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Modales estándar (Agosto y Septiembre)
@@ -1027,20 +1656,265 @@
             document.getElementById('modalOverlay').style.display = 'none';
         }
 
-        // Buscador global
-        function filterContent() {
-            const input = document.getElementById('globalSearch').value.toLowerCase();
-            const items = document.querySelectorAll('.community-item');
+        // ================== BUSCADOR AVANZADO ==================
+        const MONTH_LABELS = { agosto: 'Agosto 2026', septiembre: 'Septiembre 2026', octubre: 'Octubre 2026' };
+        const searchState = { matches: [], active: -1 };
 
-            items.forEach(item => {
-                const text = item.innerText.toLowerCase();
-                if (text.includes(input)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
+        function normalizeText(s) {
+            return (s || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // Indexa todas las comunidades leyendo el DOM (sin tocar los datos)
+        function collectCommunities() {
+            const list = [];
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                const monthId = tab.id;
+                const monthLabel = MONTH_LABELS[monthId] || monthId;
+                let currentDate = '';
+                tab.querySelectorAll('.date-block-title, .community-item').forEach(node => {
+                    if (node.classList.contains('date-block-title')) {
+                        currentDate = node.dataset.date || node.textContent.replace(/Fecha:\s*/i, '').trim();
+                    } else {
+                        const h5 = node.querySelector('h5');
+                        if (!h5) return;
+                        const name = h5.textContent.replace(/📍/g, '').trim();
+                        list.push({ el: node, name, date: currentDate, monthId, monthLabel });
+                    }
+                });
+            });
+            return list;
+        }
+
+        function runSearch(value) {
+            const query = normalizeText(value);
+            const box = document.getElementById('searchResults');
+            const clearBtn = document.getElementById('searchClear');
+            if (clearBtn) clearBtn.classList.toggle('show', value.length > 0);
+
+            if (!query) {
+                resetSearch();
+                box.classList.remove('show');
+                box.innerHTML = '';
+                searchState.matches = [];
+                return;
+            }
+
+            const matches = collectCommunities().filter(c =>
+                normalizeText(c.name).includes(query) ||
+                normalizeText(c.date).includes(query) ||
+                normalizeText(c.monthLabel).includes(query)
+            );
+
+            searchState.matches = matches;
+            searchState.active = matches.length ? 0 : -1;
+            renderResults(value.trim());
+            applySearchFilter(matches);
+        }
+
+        function renderResults(rawQuery) {
+            const box = document.getElementById('searchResults');
+            const matches = searchState.matches;
+            if (!matches.length) {
+                box.innerHTML = '<div class="search-empty">Sin resultados para “' + escapeHtml(rawQuery) + '”.</div>';
+                box.classList.add('show');
+                return;
+            }
+            box.innerHTML = matches.slice(0, 25).map((c, i) => `
+                <button type="button" class="search-result${i === searchState.active ? ' active' : ''}" onclick="gotoResult(${i})">
+                    <span class="sr-icon">📍</span>
+                    <span class="sr-body">
+                        <span class="sr-name">${escapeHtml(c.name)}</span><br>
+                        <span class="sr-meta">${escapeHtml(c.monthLabel)} · ${escapeHtml(c.date)}</span>
+                    </span>
+                    <span class="sr-icon">↗</span>
+                </button>
+            `).join('');
+            box.classList.add('show');
+        }
+
+        function updateActiveResult() {
+            const items = document.querySelectorAll('#searchResults .search-result');
+            items.forEach((el, i) => el.classList.toggle('active', i === searchState.active));
+            const active = items[searchState.active];
+            if (active) active.scrollIntoView({ block: 'nearest' });
+        }
+
+        function searchKeydown(e) {
+            if (e.key === 'Escape') { clearSearch(); return; }
+            if (!searchState.matches.length) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); searchState.active = Math.min(searchState.active + 1, searchState.matches.length - 1); updateActiveResult(); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); searchState.active = Math.max(searchState.active - 1, 0); updateActiveResult(); }
+            else if (e.key === 'Enter') { e.preventDefault(); gotoResult(searchState.active); }
+        }
+
+        // Va directo a la comunidad elegida (cambia de mes, filtra y resalta)
+        function gotoResult(index) {
+            const c = searchState.matches[index];
+            if (!c) return;
+            activateMonth(c.monthId);
+            applySearchFilter([c]);
+            document.getElementById('searchResults').classList.remove('show');
+            c.el.classList.remove('flash');
+            window.setTimeout(() => {
+                c.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                void c.el.offsetWidth;
+                c.el.classList.add('flash');
+            }, 380);
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('globalSearch');
+            input.value = '';
+            resetSearch();
+            const box = document.getElementById('searchResults');
+            box.classList.remove('show');
+            box.innerHTML = '';
+            document.getElementById('searchClear').classList.remove('show');
+            searchState.matches = [];
+            searchState.active = -1;
+            input.focus();
+        }
+
+        function resetSearch() {
+            document.querySelectorAll('.hidden-by-search').forEach(el => el.classList.remove('hidden-by-search'));
+            document.querySelectorAll('.date-block-title').forEach(title => setBlockOpen(title, false));
+        }
+
+        // Oculta todo lo que no coincide: deja solo la comunidad buscada
+        function applySearchFilter(matches) {
+            const keep = new Set(matches.map(m => m.el));
+
+            document.querySelectorAll('.community-item').forEach(el => {
+                el.classList.toggle('hidden-by-search', !keep.has(el));
+            });
+
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                let currentTitle = null;
+                let titleHasMatch = false;
+                const flush = () => { if (currentTitle) currentTitle.classList.toggle('hidden-by-search', !titleHasMatch); };
+                tab.querySelectorAll('.date-block-title, .community-item').forEach(node => {
+                    if (node.classList.contains('date-block-title')) {
+                        flush();
+                        currentTitle = node;
+                        titleHasMatch = false;
+                    } else if (!node.classList.contains('hidden-by-search')) {
+                        titleHasMatch = true;
+                    }
+                });
+                flush();
+            });
+
+            document.querySelectorAll('.basket-spec, .section-subtitle, .progress-wrapper, .balance-metrics-grid, .consolidated-box, .note-box').forEach(el => {
+                el.classList.add('hidden-by-search');
+            });
+
+            document.querySelectorAll('.section-card').forEach(card => {
+                const hasVisible = card.querySelector('.community-item:not(.hidden-by-search)');
+                card.classList.toggle('hidden-by-search', !hasVisible);
+            });
+
+            // Despliega únicamente las fechas que contienen coincidencias
+            document.querySelectorAll('.date-block-title').forEach(title => {
+                const body = title.nextElementSibling;
+                if (body && body.classList.contains('date-block-body')) {
+                    setBlockOpen(title, !!body.querySelector('.community-item:not(.hidden-by-search)'));
                 }
             });
         }
+
+        // Cierra el panel de resultados al hacer clic fuera
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.search-shell')) {
+                const box = document.getElementById('searchResults');
+                if (box) box.classList.remove('show');
+            }
+        });
+
+        // Atajo Ctrl/Cmd + K
+        window.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+                e.preventDefault();
+                const input = document.getElementById('globalSearch');
+                input.focus();
+                input.select();
+            }
+        });
+
+        // ================== BLOQUES DE FECHA DESPLEGABLES ==================
+        function setupDateBlocks() {
+            document.querySelectorAll('.date-block-title').forEach(title => {
+                if (title.dataset.blockReady === '1') return;
+                title.dataset.blockReady = '1';
+                title.dataset.date = title.textContent.replace(/Fecha:\s*/i, '').trim();
+
+                const body = document.createElement('div');
+                body.className = 'date-block-body collapsed';
+                const inner = document.createElement('div');
+                inner.className = 'date-block-inner';
+                body.appendChild(inner);
+
+                const toMove = [];
+                let node = title.nextElementSibling;
+                while (node && !node.classList.contains('date-block-title')) {
+                    toMove.push(node);
+                    node = node.nextElementSibling;
+                }
+                title.parentNode.insertBefore(body, title.nextSibling);
+                toMove.forEach(n => inner.appendChild(n));
+
+                const count = inner.querySelectorAll('.community-item').length;
+                if (count > 0) {
+                    const badge = document.createElement('span');
+                    badge.className = 'date-count';
+                    badge.textContent = count;
+                    title.appendChild(badge);
+                }
+
+                title.setAttribute('role', 'button');
+                title.setAttribute('tabindex', '0');
+                title.setAttribute('aria-expanded', 'false');
+                title.addEventListener('click', function () {
+                    setBlockOpen(title, title.getAttribute('aria-expanded') !== 'true');
+                });
+                title.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setBlockOpen(title, title.getAttribute('aria-expanded') !== 'true');
+                    }
+                });
+            });
+        }
+
+        function setBlockOpen(title, open) {
+            const body = title.nextElementSibling;
+            if (!body || !body.classList.contains('date-block-body')) return;
+            body.classList.toggle('collapsed', !open);
+            title.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+
+        function setAllBlocks(open) {
+            document.querySelectorAll('.date-block-title').forEach(title => setBlockOpen(title, open));
+            updateExpandToggle(open);
+        }
+
+        function updateExpandToggle(open) {
+            const icon = document.getElementById('expandIcon');
+            const text = document.getElementById('expandText');
+            if (icon) icon.textContent = open ? '▴' : '▾';
+            if (text) text.textContent = open ? 'Contraer todo' : 'Expandir todo';
+        }
+
+        function toggleAllBlocks() {
+            const anyCollapsed = Array.from(document.querySelectorAll('.date-block-body'))
+                .some(b => b.classList.contains('collapsed'));
+            setAllBlocks(anyCollapsed);
+        }
+
+        setupDateBlocks();
 
         // Botón Volver Arriba
         window.onscroll = function() {
